@@ -5,4 +5,4 @@ pyautogui
 pygetwindow
 pillow
 pywin32
-opencv
+opencv-python
