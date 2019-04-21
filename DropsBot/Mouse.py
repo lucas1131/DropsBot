@@ -25,14 +25,14 @@ class Mouse:
 
 		return ctypes.windll.user32.mouse_event(flags, x_calc, y_calc, data, extra_info)
 
-	def _get_button_value(self, button_name, button_up=False):
+	def _get_button_value(self, button, button_up=False):
 		"""convert the name of the button into the corresponding value"""
 		buttons = 0
-		if button_name.find("right") >= 0:
+		if button.find("right") >= 0:
 			buttons = self.MOUSEEVENTF_RIGHTDOWN
-		if button_name.find("left") >= 0:
+		if button.find("left") >= 0:
 			buttons = buttons + self.MOUSEEVENTF_LEFTDOWN
-		if button_name.find("middle") >= 0:
+		if button.find("middle") >= 0:
 			buttons = buttons + self.MOUSEEVENTF_MIDDLEDOWN
 		if button_up:
 			buttons = buttons << 1
@@ -46,20 +46,20 @@ class Mouse:
 		y = y if (y != -1) else old_pos[1]	
 		self._do_event(self.MOUSEEVENTF_MOVE + self.MOUSEEVENTF_ABSOLUTE, x, y, 0, 0)
 
-	def press_button(self, pos=(-1, -1), button_name="left", button_up=False):
+	def press_button(self, pos=(-1, -1), button="left", button_up=False):
 		"""push a button of the mouse"""
 		self.move_mouse(pos)
-		self._do_event(self.get_button_value(button_name, button_up), 0, 0, 0, 0)
+		self._do_event(self.get_button_value(button, button_up), 0, 0, 0, 0)
 
-	def click(self, pos=(-1, -1), button_name="left"):
+	def click(self, pos=(-1, -1), button="left"):
 		"""Click at the specified placed"""
 		self.move_mouse(pos)
-		self._do_event(self._get_button_value(button_name, False) + self._get_button_value(button_name, True), 0, 0, 0, 0)
+		self._do_event(self._get_button_value(button, False) + self._get_button_value(button, True), 0, 0, 0, 0)
 
-	def double_click (self, pos=(-1, -1), button_name="left"):
+	def double_click (self, pos=(-1, -1), button="left"):
 		"""Double click at the specifed placed"""
 		for i in xrange(2): 
-			self.click(pos, button_name)
+			self.click(pos, button)
 
 	def get_position(self):
 		"""get mouse position"""
