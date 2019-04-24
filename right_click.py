@@ -11,10 +11,6 @@ m.move_mouse((2070, 200))
 focusWindow(w)
 # m._do_event(m._get_button_value("left", False), 0, 0, 0, 0)
 
-for _ in range(120):
-	print("Clicking down")
-	m._do_event(m._get_button_value("right", False), 0, 0, 0, 0)
-	time.sleep(0.1)
-	print("Clicking up")
-	m._do_event(m._get_button_value("right", True), 0, 0, 0, 0)
+for _ in range(150):
+	m.click(button="right", delay=0.1)
 	time.sleep(0.4)
