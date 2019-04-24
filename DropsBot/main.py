@@ -2,7 +2,8 @@ import time
 import Mouse
 import utils
 
-
+# TODO: put these in config file
+framesToUpdate = 10 # Update bot state after 10 frames - 3 times per second if 30 fps
 fps = 30
 spf = 1/fps # Seconds per frame
 t1 = 0
@@ -21,6 +22,7 @@ def delay(t0, target):
 		t1 = t2
 
 def setup():
+	# TODO: load config
 	pass
 
 def gameLoop():
@@ -34,7 +36,7 @@ def gameLoop():
 		print(deltaTime)
 
 		frameTime = time.clock() - t2
-		delay(frameTime, spf) # Sincronize with game's framerate
+		delay(frameTime, spf*framesToUpdate) # Sincronize with game's framerate
 		t1 = t2 # Frame's end time
 
 if __name__ == "__main__":
