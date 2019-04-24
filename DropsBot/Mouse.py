@@ -1,3 +1,4 @@
+import time
 import win32gui, win32api, win32con, ctypes
 
 # TODO: mouse wheel rolling up and down event data and extra info
@@ -51,15 +52,17 @@ class Mouse:
 		self.move_mouse(pos)
 		self._do_event(self.get_button_value(button, button_up), 0, 0, 0, 0)
 
-	def click(self, pos=(-1, -1), button="left"):
+	def click(self, pos=(-1, -1), button="left", delay=0.01):
 		"""Click at the specified placed"""
 		self.move_mouse(pos)
-		self._do_event(self._get_button_value(button, False) + self._get_button_value(button, True), 0, 0, 0, 0)
+		self._do_event(self._get_button_value(button, False), 0, 0, 0, 0)
+		time.sleep(delay)
+		self._do_event(self._get_button_value(button, True), 0, 0, 0, 0)
 
 	def double_click (self, pos=(-1, -1), button="left"):
 		"""Double click at the specifed placed"""
-		for i in xrange(2): 
-			self.click(pos, button)
+		self.click(pos, button)
+		self.click(pos, button)
 
 	def get_position(self):
 		"""get mouse position"""
