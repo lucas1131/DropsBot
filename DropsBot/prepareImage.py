@@ -31,9 +31,11 @@ if __name__ == "__main__":
 			print("Operations:")
 			print("  rescale FACTOR")
 			print("  grayscale")
+			print("  extract (RED|GREEN|BLUE)")
 			print("  threshold THRESH (BINARY|BINARY_INV|TRUNCATE|TOZERO|TOZERO_INV) [OTSU]")
 			print("  blur RADIUS")
 			print("  distance (c|l1|l2)")
+			print("  normalize MIN MAX")
 			print("  invert")
 			print("  erode [KERNEL]")
 			print("  dilate [KERNEL]")
@@ -87,6 +89,10 @@ if __name__ == "__main__":
 				elif op == "grayscale":
 					img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 					changed = True
+
+				elif op == "extract":
+					img = img[:, :, op[1]]
+					changed = True
 				
 				elif op == "threshold":
 					try:
@@ -102,6 +108,10 @@ if __name__ == "__main__":
 
 				elif op == "distance":
 					img = cv2.distanceTransform(img, distances[args[1]], 3)
+					changed = True
+					
+				elif op == "normalize":
+					img = cv2.normalize(img, None, float(args[1]), float(args[2]), cv2.NORM_MINMAX)
 					changed = True
 
 				elif op == "invert":
