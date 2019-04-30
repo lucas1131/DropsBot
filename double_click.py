@@ -12,12 +12,10 @@ time.sleep(1.5)
 
 w = getRagWindow()
 m = Mouse()
-m.move_mouse((2070, 200))
-# m.move_mouse((2270, 400))
+m.move((2070, 200))
 focusWindow(w)
-# m._do_event(m._get_button_value("left", False), 0, 0, 0, 0)
 
 for _ in range(args.n):
-	m.double_click()
-	m.double_click()
+	m.doubleClick()
+	m.doubleClick()
 	time.sleep(args.delay)
