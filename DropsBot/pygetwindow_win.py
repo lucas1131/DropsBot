@@ -291,6 +291,7 @@ class Win32Window():
 
     def activate(self):
         """Activate this window and make it the foreground window."""
+        # This does not work if window is minimized for some reason
         result = user32.SetForegroundWindow(self._hWnd)
         if result == 0:
             _raiseWithLastError()
@@ -327,6 +328,51 @@ class Win32Window():
     #######################
     # Added functionality #
     #######################
+    def getRelPos(absx, absy, anchor="topleft"):
+
+        anchors = {
+            "topleft": self.topleft,
+            "topright": self.topright,
+            "topcenter": self.topcenter,
+
+            "midleft": self.midleft,
+            "midright": self.midright,
+            "midcenter": self.midcenter,
+
+            "bottomleft": self.bottomleft,
+            "bottomright": self.bottomright,
+            "bottomcenter": self.bottomcenter,
+        }
+
+        pinPoint = anchors[anchor]
+        relx, rely = absx-pinPoint.x, absy-pinPoint.y
+        return relx, rely
+
+    def getAbsPos(relx, rely, anchor="topleft"):
+
+        anchors = {
+            "topleft": self.topleft,
+            "topright": self.topright,
+            "topcenter": self.topcenter,
+
+            "midleft": self.midleft,
+            "midright": self.midright,
+            "midcenter": self.midcenter,
+
+            "bottomleft": self.bottomleft,
+            "bottomright": self.bottomright,
+            "bottomcenter": self.bottomcenter,
+        }
+
+        pinPoint = anchors[anchor]
+        absx, absy = relx+pinPoint.x, rely+pinPoint.y
+        return absx, absy
+
+    def focus(self):
+        if self.isMinimized:
+            self.restore()
+        self.activate()
+
     def registerHotKey(self, modifiers, key, id=None):
         """Register a hotkey for this window.
         Syntax
@@ -337,7 +383,11 @@ class Win32Window():
             UINT vk
         );
         """
+        pass
 
+    #######################
+    # # # # # # # # # # # #
+    #######################
 
 
     @property
