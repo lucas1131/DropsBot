@@ -4,21 +4,9 @@ import win32api, win32gui, win32con
 import ctypes
 user32 = ctypes.windll.user32 # load user32 dll
 
+from DropsBot.utils import microsleep
+
 # TODO: mouse wheel rolling up and down event data and extra info
-
-def microsleep(t):
-	''''Delays the execution until initial time reaches target time.
-	This function has 150 nanoseconds of precision, with 1.3 ns standard deviation.
-	Args:
-		t (int): Target time, in seconds.
-	'''
-	t1 = time.clock()
-	t0 = 0
-	while t0 < t:
-		t2 = time.clock()
-		t0 += t2 - t1
-		t1 = t2
-
 class Mouse:
 	"""It simulates the mouse"""
 
@@ -44,7 +32,7 @@ class Mouse:
 	SM_CXSCREEN = 0 
 	SM_CYSCREEN = 1
 
-	def _do_event(self, flags, x_pos, y_pos, data, extra_info):
+	def _doEvent(self, flags, x_pos, y_pos, data, extra_info):
 		"""generate a mouse event"""
 		x_calc = 65536 * x_pos / user32.GetSystemMetrics(self.SM_CXSCREEN) + 1
 		y_calc = 65536 * y_pos / user32.GetSystemMetrics(self.SM_CYSCREEN) + 1
@@ -53,7 +41,7 @@ class Mouse:
 
 		return user32.mouse_event(flags, x_calc, y_calc, data, extra_info)
 
-	def _get_button_value(self, button, button_up=False):
+	def _getButtonValue(self, button, button_up=False):
 		"""convert the name of the button into the corresponding value"""
 		buttons = 0
 		if button.find("right") >= 0:
@@ -66,27 +54,27 @@ class Mouse:
 			buttons = buttons << 1
 		return buttons
 
-	def move_mouse(self, pos):
+	def move(self, pos):
 		"""move the mouse to the specified coordinates"""
 		(x, y) = pos
 		old_pos = self.get_position()
 		x = x if (x != -1) else old_pos[0]
 		y = y if (y != -1) else old_pos[1]	
-		self._do_event(self.MOUSE_EVENTF_MOVE + self.MOUSE_EVENTF_ABSOLUTE, x, y, 0, 0)
+		self._doEvent(self.MOUSE_EVENTF_MOVE + self.MOUSE_EVENTF_ABSOLUTE, x, y, 0, 0)
 
-	def press_button(self, pos=(-1, -1), button="left", button_up=False):
+	def pressButton(self, pos=(-1, -1), button="left", button_up=False):
 		"""push a button of the mouse"""
-		self.move_mouse(pos)
-		self._do_event(self.get_button_value(button, button_up), 0, 0, 0, 0)
+		self.move(pos)
+		self._doEvent(self._getButtonValue(button, button_up), 0, 0, 0, 0)
 
 	def click(self, pos=(-1, -1), button="left", delay=0.05):
 		"""Click at the specified placed"""
-		self.move_mouse(pos)
-		self._do_event(self._get_button_value(button, False), 0, 0, 0, 0)
+		self.move(pos)
+		self._doEvent(self._getButtonValue(button, False), 0, 0, 0, 0)
 		microsleep(delay)
-		self._do_event(self._get_button_value(button, True), 0, 0, 0, 0)
+		self._doEvent(self._getButtonValue(button, True), 0, 0, 0, 0)
 
-	def double_click (self, pos=(-1, -1), button="left"):
+	def doubleClick(self, pos=(-1, -1), button="left"):
 		"""Double click at the specifed placed"""
 		self.click(pos, button)
 		microsleep(0.001)

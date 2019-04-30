@@ -162,7 +162,7 @@ class KeyCodes:
 	# More keyboard control keys but with LEFT and RIGHT diffs
 	# - = 0x88-8F              # Unassigned
 	NUMLOCK             = 0x90 # NUM LOCK key
-	SCROLL              = 0x91 # SCROLL LOCK key
+	SCROLL_LOCK         = 0x91 # SCROLL LOCK key
 	# 0x92 =-96                # OEM pecific
 	# - = 0x97-9F              # Unassigned
 	LEFTSHIFT           = 0xA0 # Left SHIFT key
